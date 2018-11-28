@@ -1,0 +1,29 @@
+.App-logo {
+	animation: App-logo-spin infinite 20s linear;
+}
+
+.content {
+	margin-top: 70px;
+}
+div.item-content:hover {
+	border-color: bisque;
+	border-style: solid;
+}
+
+.item-blur {
+	filter: blur(4px);
+}
+
+.icon-size {
+	width: 32;
+	height: 32;
+}
+
+@keyframes App-logo-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
