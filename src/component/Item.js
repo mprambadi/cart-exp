@@ -49,6 +49,8 @@ class Item extends Component {
 					<img className="col" src={item.image} alt="gambar" />
 					<div className="d-flex flex-column align-items-center">
 						<div>{item.name}</div>
+						<div>Rp. {item.price}</div>
+
 						<div className="d-flex flex-row align-items-center justify-content-center mb-2 w-75">
 							<MdRemoveCircle
 								style={{ width: 32, height: 32 }}

@@ -50,7 +50,8 @@ class App extends Component {
 								? {
 										...item,
 										...add,
-										count: item.count + add.count,
+                              count: item.count + add.count,
+                              total: item.total + add.total
 								  }
 								: item
 					  )
