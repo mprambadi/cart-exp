@@ -4,7 +4,7 @@ import CartItem from "./CartItem";
 
 const Cart = ({ state, changeCart, removeCart }) => {
 	const filterItems = state.carts.filter(
-		item => [item.name].join(" ").indexOf(state.filter) !== 1
+		item => [item.name].join(" ").indexOf(state.filter) !== -1
 	);
 	const total = filterItems.map(item => item.total).reduce((a, b) => a + b, 0);
 
