@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/cart-exp/static/css/1.318c07b5.chunk.css"
   },
   {
-    "revision": "8f4be1d54ed16791fdfb34cdeb4334fe",
+    "revision": "6effe01cc2b91e11958f3da340cfe6b9",
     "url": "/cart-exp/index.html"
   }
 ];
