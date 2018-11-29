@@ -4,7 +4,6 @@ import Header from "./component/Header";
 import Carts from "./component/Carts";
 import Items from "./component/Items";
 import Axios from "axios";
-import { hot } from "react-hot-loader";
 
 class App extends Component {
 	state = {
@@ -50,8 +49,8 @@ class App extends Component {
 								? {
 										...item,
 										...add,
-                              count: item.count + add.count,
-                              total: item.total + add.total
+										count: item.count + add.count,
+										total: item.total + add.total
 								  }
 								: item
 					  )
@@ -93,4 +92,4 @@ class App extends Component {
 	}
 }
 
-export default hot(module)(App);
+export default App;
