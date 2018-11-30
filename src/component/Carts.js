@@ -1,5 +1,4 @@
 import React from "react";
-import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 import CartItem from "./CartItem";
 
 const Cart = ({ state, changeCart, removeCart, carts, total, changeState }) => {
