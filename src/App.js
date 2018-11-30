@@ -9,10 +9,13 @@ import { hot } from "react-hot-loader";
 class App extends Component {
 	state = {
 		carts: [],
+		cartsChecked: true,
 		activeTab: 0,
 		loading: false,
 		items: [],
-		filter: ""
+		filter: "",
+		promoActive: false,
+		totalCartsPrice: 0
 	};
 
 	componentDidMount() {
@@ -20,17 +23,41 @@ class App extends Component {
 	}
 
 	changeCart = change => {
+		this.setState(
+			state => ({
+				carts: state.carts.map(cart =>
+					cart.id === change.id
+						? {
+								...cart,
+								...change,
+								total: change.count * cart.price
+						  }
+						: cart
+				)
+			}),
+			() => this.totalCartCalc()
+		);
+	};
+
+	addDiscount = () => {};
+
+	checkAllCarts = () => {
 		this.setState(state => ({
-			carts: state.carts.map(cart =>
-				cart.id === change.id
-					? {
-							...cart,
-							...change,
-							total: change.count * cart.price
-					  }
-					: cart
-			)
+			cartsChecked: !state.cartsChecked,
+			carts: state.carts.map(cart => {
+				cart.checked = !cart.checked;
+				return cart;
+			})
 		}));
+	};
+
+	deleteAllCarts = () => {
+		this.setState(
+			state => ({
+				carts: state.carts.filter(cart => cart.checked !== true)
+			}),
+			() => this.totalCartCalc()
+		);
 	};
 
 	fetchData = async () => {
@@ -42,22 +69,25 @@ class App extends Component {
 		this.setState({ loading: false, items: data });
 	};
 	addItem = add => {
-		this.setState(state => {
-			return {
-				carts: state.carts.find(item => item.id === add.id)
-					? state.carts.map(item =>
-							item.id === add.id
-								? {
-										...item,
-										...add,
-										count: item.count + add.count,
-										total: item.total + add.total
-								  }
-								: item
-					  )
-					: [...state.carts, add]
-			};
-		});
+		this.setState(
+			state => {
+				return {
+					carts: state.carts.find(item => item.id === add.id)
+						? state.carts.map(item =>
+								item.id === add.id
+									? {
+											...item,
+											...add,
+											count: item.count + add.count,
+											total: item.total + add.total
+									  }
+									: item
+						  )
+						: [...state.carts, add]
+				};
+			},
+			() => this.totalCartCalc()
+		);
 	};
 
 	changeState = ({ name, value }) => {
@@ -65,8 +95,19 @@ class App extends Component {
 	};
 
 	removeCart = remove => {
+		this.setState(
+			state => ({
+				carts: state.carts.filter(cart => cart.id !== remove.id)
+			}),
+			() => this.totalCartCalc()
+		);
+	};
+
+	totalCartCalc = () => {
 		this.setState(state => ({
-			carts: state.carts.filter(chart => chart.id !== remove.id)
+			totalCartsPrice: state.carts
+				.map(cart => cart.total)
+				.reduce((a, b) => a + b, 0)
 		}));
 	};
 
@@ -76,7 +117,7 @@ class App extends Component {
 				[item.name]
 					.join(" ")
 					.toLowerCase()
-					.indexOf(this.state.filter) !== -1
+					.indexOf(this.state.filter.toLowerCase()) !== -1
 		);
 	};
 	render() {
@@ -84,7 +125,7 @@ class App extends Component {
 		const Content = Tab[this.state.activeTab];
 		const items = this.filter("items");
 		const carts = this.filter("carts");
-		const total = carts.map(item => item.total).reduce((a, b) => a + b, 0);
+		const total = this.state.totalCartsPrice;
 		const count = this.state.carts.length;
 		return (
 			<div className="bg-light">
@@ -104,6 +145,8 @@ class App extends Component {
 					items={items}
 					carts={carts}
 					total={total}
+					checkAllCarts={this.checkAllCarts}
+					deleteAllCarts={this.deleteAllCarts}
 				/>
 			</div>
 		);

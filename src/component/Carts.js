@@ -1,20 +1,25 @@
 import React from "react";
 import CartItem from "./CartItem";
 import "../App.scss";
+import {  MdLocalOffer } from "react-icons/md";
 
-const Cart = ({ state, changeCart, removeCart, carts, total, changeState }) => {
+const Cart = ({ state, changeCart, removeCart, carts, total, changeState, checkAllCarts, deleteAllCarts }) => {
 	return (
 		<div className="container content">
 			<div className="w-100 bg-white content-item">
 				<div className="row">
 					<div className="col-12 col-md-8 col-lg-8">
-						<div className="d-flex justify-content-between m-2">
-							<div className="ml-2 d-flex align-items-center">
-								<input type="checkbox" />
-								<div className="ml-2">Pilih semua produk</div>
+						{total ? (
+							<div className="d-flex justify-content-between m-2 border border-success rounded p-2">
+								<div className=" d-flex align-items-center">
+									<input type="checkbox" checked={state.cartsChecked} onChange={checkAllCarts}/>
+									<div className="ml-2">Check All Product</div>
+								</div>
+								<div className="btn" onClick={deleteAllCarts}> Delete </div>
 							</div>
-							<div>Hapus</div>
-						</div>
+						) : (
+							""
+						)}
 						{carts.map(item => (
 							<CartItem
 								key={item.id}
@@ -25,18 +30,18 @@ const Cart = ({ state, changeCart, removeCart, carts, total, changeState }) => {
 							/>
 						))}
 					</div>
-					<div className="col-12 col-md-4 col-lg-4 ">
+					<div className="col-12 col-md-4 col-lg-4 content-fade">
 						<div className="position-fixed col-11 col-md-2 col-lg-3">
 							<div className="d-flex flex-column m-2 p-1 border border-success rounded ">
 								{total > 0 ? (
 									<div className="d-flex justify-content-end mt-2">
 										<div className="d-flex flex-column w-100 justify-content-center">
 											<div className="m-2 border-bottom">
-												<h3>Ringkasan Belanja</h3>
+												<h3>Order Summary</h3>
 											</div>
 											<div className="m-2 border-bottom d-flex justify-content-between">
-												<div>Total Harga</div>
-												<div>${total} </div>
+												<div>Total Price</div>
+												<div>$ {total} </div>
 											</div>
 											<button
 												className="btn btn-success mb-2 pl-3 pr-3 border-bottom"
@@ -59,7 +64,33 @@ const Cart = ({ state, changeCart, removeCart, carts, total, changeState }) => {
 										</div>
 									</div>
 								)}
-								<div className="m-2 border-top">Add Promo</div>
+								{carts.length ? (
+									<div>
+										<div className="m-2 border-top">
+											<div
+												className="text-left mt-2 btn  btn-block"
+												onClick={() =>
+													changeState({
+														name: "promoActive",
+														value: !state.promoActive
+													})
+												}
+											>
+												<MdLocalOffer /> Use Promo Code or Coupon
+											</div>
+										</div>
+										{state.promoActive && (
+											<div className="content-promo">
+												<input className="form-control" />
+												<button className="btn btn-primary btn-block mt-2">
+													Add Promo
+												</button>
+											</div>
+										)}
+									</div>
+								) : (
+									""
+								)}
 							</div>
 						</div>
 					</div>

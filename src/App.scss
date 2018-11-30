@@ -12,9 +12,12 @@
 .content-checkout {
    position: fixed;
 }
-// .app-header {
-//    min-height: 10vh;
-// }
+
+.content-promo, .content-fade {
+   opacity: 1;
+   animation: fade 1s linear;
+}
+
 
 div.item-content:hover {
 	border-color: bisque;
@@ -37,4 +40,9 @@ div.item-content:hover {
 	to {
 		transform: rotate(360deg);
 	}
+}
+
+@keyframes fade {
+   0% {opacity: 0}
+   50% {opacity: 1}
 }

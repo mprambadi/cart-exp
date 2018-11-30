@@ -24,7 +24,8 @@ class Item extends Component {
 				id: item.id,
 				count,
 				price: item.price,
-				total: item.price * count,
+            total: item.price * count,
+            checked:true,
 				...item
 			});
 			this.setState({ count: 1 });
@@ -44,7 +45,7 @@ class Item extends Component {
 		return (
 			<div className="col-lg-3 col-md-3 col-md-6 col-6 mb-5">
 				<div
-					className={`item-content bg-white ${state.loading && "item-blur"}`}
+					className={`item-content bg-white content-fade`}
 				>
 					<img className="col" src={item.image} alt="gambar" />
 					<div className="d-flex flex-column align-items-center">
