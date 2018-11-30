@@ -49,25 +49,29 @@ class Item extends Component {
 					<img className="col" src={item.image} alt="gambar" />
 					<div className="d-flex flex-column align-items-center">
 						<div>{item.name}</div>
-						<div>Rp. {item.price}</div>
+						<div>$ {item.price}</div>
 
-						<div className="d-flex flex-row align-items-center justify-content-center mb-2 w-75">
-							<MdRemoveCircle
-								style={{ width: 32, height: 32 }}
-								onClick={() => this.state.count > 1 && this.handleCount(-1)}
-							/>
+						<div className="d-flex flex-row align-items-center justify-content-center mb-2">
+							<div className="btn p-1">
+								<MdRemoveCircle
+									style={{ width: 24, height: 24 }}
+									onClick={() => this.state.count > 1 && this.handleCount(-1)}
+								/>
+							</div>
 							<input
 								placeholder="0"
-								className="form-control w-75 text-center text-success"
+								className="form-control w-25 text-center text-success"
 								name="count"
 								value={this.state.count}
 								onChange={this.changeCount}
 							/>
 
-							<MdAddCircle
-								style={{ width: 32, height: 32 }}
-								onClick={() => this.handleCount(1)}
-							/>
+							<div className="btn p-1">
+								<MdAddCircle
+									style={{ width: 24, height: 24, color: "#28a745" }}
+									onClick={() => this.handleCount(1)}
+								/>
+							</div>
 						</div>
 
 						<div className="d-flex flex-row align-items-center justify-content-center mb-2 w-75 d-">

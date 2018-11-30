@@ -14,7 +14,7 @@ const Search = ({state, changeState}) => {
                onChange={({target:{name,value}})=>changeState({name,value})}
 				/>
 				<div className="input-group-append">
-					<button className="btn btn-outline-dark" type="button" id="button-addon2">
+					<button className="btn" type="button" id="button-addon2">
 						<MdSearch style={{ width: 24, height: 24 }} />
 					</button>
 				</div>

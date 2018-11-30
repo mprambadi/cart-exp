@@ -3,8 +3,14 @@
 }
 
 .content {
-	margin-top: 70px;
+   margin-top: 60px;
+   min-height: 90vh;
 }
+
+// .app-header {
+//    min-height: 10vh;
+// }
+
 div.item-content:hover {
 	border-color: bisque;
 	border-style: solid;

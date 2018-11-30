@@ -4,6 +4,7 @@ import Header from "./component/Header";
 import Carts from "./component/Carts";
 import Items from "./component/Items";
 import Axios from "axios";
+import { hot } from "react-hot-loader";
 
 class App extends Component {
 	state = {
@@ -69,27 +70,44 @@ class App extends Component {
 		}));
 	};
 
+	filter = item => {
+		return this.state[item].filter(
+			item =>
+				[item.name]
+					.join(" ")
+					.toLowerCase()
+					.indexOf(this.state.filter) !== -1
+		);
+	};
 	render() {
 		const Tab = { 0: Items, 1: Carts };
 		const Content = Tab[this.state.activeTab];
+		const items = this.filter("items");
+		const carts = this.filter("carts");
+		const total = carts.map(item => item.total).reduce((a, b) => a + b, 0);
+		const count = this.state.carts.length;
 		return (
 			<div className="bg-light">
-				<Header changeState={this.changeState} state={this.state} />
-
-				<div className="mt-5" />
-				<div className="container content">
-					<div className="row">
-						<Content
-							addItem={this.addItem}
-							state={this.state}
-							changeCart={this.changeCart}
-							removeCart={this.removeCart}
-						/>
-					</div>
-				</div>
+				<Header
+					changeState={this.changeState}
+					state={this.state}
+					carts={carts}
+					total={total}
+					count={count}
+				/>
+				<Content
+					addItem={this.addItem}
+					state={this.state}
+					changeCart={this.changeCart}
+					removeCart={this.removeCart}
+					changeState={this.changeState}
+					items={items}
+					carts={carts}
+					total={total}
+				/>
 			</div>
 		);
 	}
 }
 
-export default App;
+export default hot(module)(App);

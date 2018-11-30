@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { MdRemoveCircle, MdAddCircle, MdDelete } from "react-icons/md";
 import "../App.scss";
 
@@ -20,48 +20,50 @@ const CartItem = props => {
 		});
 	};
 
-	const { state, item, removeCart } = props;
+	const { item, removeCart } = props;
 	return (
 		<div>
-			<div className="d-flex justify-content-between bg-white border-bottom align-items-center">
-				<img src={item.image} alt="gambar" width="100" height="100" />
-				<div className="d-flex flex-column align-items-center">
-					<div>{item.name}</div>
-					<div>{item.price}</div>
+			<div className="d-flex justify-content-between  border-bottom align-items-center">
+				<div className="d-flex align-items-center ml-2">
+					<img src={item.image} alt="gambar" height="100" />
+					<div className="d-flex flex-column align-items-center">
+						<div>{item.name}</div>
+						<div>{item.price}</div>
+					</div>
 				</div>
 
-				<div className="d-flex flex-column align-items-center">
-					<div className="d-flex flex-row align-items-center justify-content-center mb-2 w-75">
-						<div className="btn">
+				<div className="d-flex flex-column align-items-end ">
+					<div className="d-flex flex-row justify-content-end align-items-center  mb-2 mr-2 ">
+						<div className="btn p-0">
 							<MdRemoveCircle
-								style={{ width: 32, height: 32 }}
+								style={{ width: 24, height: 24 }}
 								onClick={() => handleCount(-1)}
 							/>
 						</div>
 						<input
 							type="text"
 							placeholder="0"
-							className="form-control w-75 text-center text-success"
+							className="form-control text-center text-success w-25"
 							name="count"
 							value={item.count}
 							onChange={changeCount}
 						/>
-						<div className="btn">
+						<div className="btn p-0">
 							<MdAddCircle
-								style={{ width: 32, height: 32 }}
+								style={{ width: 24, height: 24, color: "#28a745" }}
 								onClick={() => handleCount(1)}
 							/>
 						</div>
 
-						<div className="btn">
+						<div className="btn p-0">
 							<MdDelete
-								style={{ width: 32, height: 32 }}
+								style={{ width: 24, height: 24 }}
 								onClick={() => removeCart({ id: item.id })}
 							/>
 						</div>
 					</div>
 
-					<div>Total {item.total}</div>
+					<div className="text-right bg-white mr-2">Total $ {item.total}</div>
 
 					<div className="d-flex flex-row align-items-center justify-content-center mb-2 w-75 d-">
 						<span
