@@ -6,7 +6,12 @@
    margin-top: 60px;
    min-height: 90vh;
 }
-
+.content-item {
+   min-height: 90vh;
+}
+.content-checkout {
+   position: fixed;
+}
 // .app-header {
 //    min-height: 10vh;
 // }

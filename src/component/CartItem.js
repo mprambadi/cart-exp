@@ -22,11 +22,12 @@ const CartItem = props => {
 
 	const { item, removeCart } = props;
 	return (
-		<div>
-			<div className="d-flex justify-content-between  border-bottom align-items-center">
+		<div className="border-success border m-2 rounded">
+			<div className="d-flex justify-content-between  align-items-center">
 				<div className="d-flex align-items-center ml-2">
+               <input type="checkbox" />
 					<img src={item.image} alt="gambar" height="100" />
-					<div className="d-flex flex-column align-items-center">
+					<div className="d-flex flex-column align-items-start ">
 						<div>{item.name}</div>
 						<div>{item.price}</div>
 					</div>
