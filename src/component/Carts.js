@@ -1,21 +1,37 @@
 import React from "react";
 import CartItem from "./CartItem";
 import "../App.scss";
-import {  MdLocalOffer } from "react-icons/md";
+import { MdLocalOffer } from "react-icons/md";
 
-const Cart = ({ state, changeCart, removeCart, carts, total, changeState, checkAllCarts, deleteAllCarts }) => {
+const Cart = ({
+	state,
+	changeCart,
+	removeCart,
+	carts,
+	total,
+	changeState,
+	checkAllCarts,
+	deleteAllCarts,
+	addDiscount
+}) => {
 	return (
 		<div className="container content">
 			<div className="w-100 bg-white content-item">
 				<div className="row">
 					<div className="col-12 col-md-8 col-lg-8">
-						{total ? (
+						{carts.length ? (
 							<div className="d-flex justify-content-between m-2 border border-success rounded p-2">
 								<div className=" d-flex align-items-center">
-									<input type="checkbox" checked={state.cartsChecked} onChange={checkAllCarts}/>
+									<input
+										type="checkbox"
+										checked={state.cartsChecked}
+										onChange={checkAllCarts}
+									/>
 									<div className="ml-2">Check All Product</div>
 								</div>
-								<div className="btn" onClick={deleteAllCarts}> Delete </div>
+								<div className="btn" onClick={deleteAllCarts}>
+									Delete
+								</div>
 							</div>
 						) : (
 							""
@@ -45,7 +61,7 @@ const Cart = ({ state, changeCart, removeCart, carts, total, changeState, checkA
 											</div>
 											<button
 												className="btn btn-success mb-2 pl-3 pr-3 border-bottom"
-												onClick={changeCart}
+												onClick={deleteAllCarts}
 											>
 												Checkout
 											</button>
@@ -81,8 +97,25 @@ const Cart = ({ state, changeCart, removeCart, carts, total, changeState, checkA
 										</div>
 										{state.promoActive && (
 											<div className="content-promo">
-												<input className="form-control" />
-												<button className="btn btn-primary btn-block mt-2">
+												<input
+													name="discount"
+													className="form-control"
+													value={state.discount}
+													onChange={({ target: { name, value } }) =>
+														changeState({ name, value })
+													}
+												/>
+												{state.discountMessage && (
+													<div className={`text-center mt-2 ${state.discountStatus ? "text-primary": "text-danger" }`}>
+														{state.discountStatus ? state.discountMessage : state.discountMessage}
+													</div>
+												)}
+
+												<button
+													className="btn btn-primary btn-block mt-2"
+                                       onClick={addDiscount}
+                                       disabled={state.discountStatus}
+												>
 													Add Promo
 												</button>
 											</div>

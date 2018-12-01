@@ -4,10 +4,10 @@ import "../App.scss";
 
 const CartItem = props => {
 	const handleCount = add => {
-		const { item, changeCart, removeCart } = props;
+		const { item, changeCart } = props;
 
 		if (item.count < 1) {
-			removeCart({ id: item.id });
+			return changeCart({ id: item.id, count: 1, quantity: 1 });
 		}
 		changeCart({ id: item.id, count: item.count + add });
 	};
@@ -20,12 +20,22 @@ const CartItem = props => {
 		});
 	};
 
-	const { item, removeCart, changeCart } = props;
+	const { item, removeCart, changeCart, state } = props;
 	return (
 		<div className="border-success border m-2 rounded content-fade">
 			<div className="d-flex justify-content-between  align-items-center">
 				<div className="d-flex align-items-center ml-2">
-					<input type="checkbox" checked={item.checked} onChange={()=>changeCart({id:item.id, count:item.count, checked:!item.checked})}/>
+					<input
+						type="checkbox"
+						checked={item.checked}
+						onChange={() =>
+							changeCart({
+								id: item.id,
+								count: item.count,
+								checked: !item.checked
+							})
+						}
+					/>
 					<img src={item.image} alt="gambar" height="100" />
 					<div className="d-flex flex-column align-items-start ">
 						<div>{item.name}</div>
@@ -44,12 +54,17 @@ const CartItem = props => {
 							</div>
 
 							<div className="d-flex justify-content-end">
-								<div className="btn p-0">
-									<MdRemoveCircle
-										style={{ width: 24, height: 24 }}
-										onClick={() => handleCount(-1)}
-									/>
-								</div>
+								<button
+									className="btn p-0"
+									disabled={
+										state.items.find(content => content.id === item.id) &&
+										state.items.find(content => content.id === item.id)
+											.quantity === item.quantity
+									}
+									onClick={() => handleCount(-1)}
+								>
+									<MdRemoveCircle style={{ width: 24, height: 24 }} />
+								</button>
 								<input
 									type="text"
 									placeholder="0"
@@ -58,12 +73,15 @@ const CartItem = props => {
 									value={item.count}
 									onChange={changeCount}
 								/>
-								<div className="btn p-0">
+								<button
+									className="btn p-0"
+									disabled={item.quantity === 0}
+									onClick={() => handleCount(1)}
+								>
 									<MdAddCircle
 										style={{ width: 24, height: 24, color: "#28a745" }}
-										onClick={() => handleCount(1)}
 									/>
-								</div>
+								</button>
 							</div>
 						</div>
 					</div>

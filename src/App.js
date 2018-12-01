@@ -15,7 +15,24 @@ class App extends Component {
 		items: [],
 		filter: "",
 		promoActive: false,
-		totalCartsPrice: 0
+		totalCartsPrice: 0,
+		discount: "",
+		discountMessage: "",
+		discountStatus: false
+	};
+
+	resetState = {
+		carts: [],
+		cartsChecked: true,
+		activeTab: 0,
+		loading: false,
+		items: [],
+		filter: "",
+		promoActive: false,
+		totalCartsPrice: 0,
+		discount: "",
+		discountMessage: "",
+		discountStatus: false
 	};
 
 	componentDidMount() {
@@ -30,16 +47,30 @@ class App extends Component {
 						? {
 								...cart,
 								...change,
-								total: change.count * cart.price
+                        total: change.count * cart.price,
+                        quantity: state.items.find(item=>item.id===change.id).quantity - change.count,
 						  }
 						: cart
-				)
+            ),
+				...this.resetPromo
 			}),
-			() => this.totalCartCalc()
+			() => this.totalCartCalc(change)
 		);
 	};
 
-	addDiscount = () => {};
+	addDiscount = () => {
+		if (this.state.discount === "BELANJA") {
+			return this.setState(state => ({
+				totalCartsPrice: state.totalCartsPrice - state.totalCartsPrice * 0.2,
+				discountMessage: "Promo code has been applied",
+				discountStatus: true
+			}));
+		}
+		this.setState({
+			discountMessage: "Promo code not found",
+			discountStatus: false
+		});
+	};
 
 	checkAllCarts = () => {
 		this.setState(state => ({
@@ -51,10 +82,18 @@ class App extends Component {
 		}));
 	};
 
+	resetPromo = {
+		discount: "",
+		discountMessage: "",
+		discountStatus: false,
+		promoActive: false
+	};
+
 	deleteAllCarts = () => {
 		this.setState(
 			state => ({
-				carts: state.carts.filter(cart => cart.checked !== true)
+				carts: state.carts.filter(cart => cart.checked !== true),
+				...this.resetPromo
 			}),
 			() => this.totalCartCalc()
 		);
@@ -66,9 +105,16 @@ class App extends Component {
 			"https://res.cloudinary.com/sivadass/raw/upload/v1535817394/json/products.json"
 		);
 
-		this.setState({ loading: false, items: data });
+		this.setState({
+			loading: false,
+			items: data.map(item => {
+				item.quantity = 5;
+				return item;
+			})
+		});
 	};
 	addItem = add => {
+      console.log(add)
 		this.setState(
 			state => {
 				return {
@@ -79,14 +125,17 @@ class App extends Component {
 											...item,
 											...add,
 											count: item.count + add.count,
-											total: item.total + add.total
+											total: item.total + add.total,
+											quantity: item.quantity - add.count
 									  }
 									: item
 						  )
-						: [...state.carts, add]
+						: [...state.carts, add],
+
+					...this.resetPromo
 				};
 			},
-			() => this.totalCartCalc()
+			() => this.totalCartCalc(add)
 		);
 	};
 
@@ -103,7 +152,7 @@ class App extends Component {
 		);
 	};
 
-	totalCartCalc = () => {
+	totalCartCalc = add => {
 		this.setState(state => ({
 			totalCartsPrice: state.carts
 				.map(cart => cart.total)
@@ -147,6 +196,7 @@ class App extends Component {
 					total={total}
 					checkAllCarts={this.checkAllCarts}
 					deleteAllCarts={this.deleteAllCarts}
+					addDiscount={this.addDiscount}
 				/>
 			</div>
 		);
