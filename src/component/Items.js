@@ -1,22 +1,40 @@
 import React from "react";
 import Item from "./Item";
+import { connect } from "react-redux";
+import { fetchProductsAction } from "../redux/actions/itemActions";
 
-const Items = ({ addItem, state, removeChart, items }) => {
-	return (
-		<div className="container content">
-			<div className="row">
-				{items.map(item => (
-					<Item
-						key={item.id}
-						addItem={addItem}
-						item={item}
-						state={state}
-						removeChart={removeChart}
-					/>
-				))}
+class Items extends React.Component {
+	componentDidMount() {
+		this.props.fetchProductsAction();
+	}
+
+	render() {
+		const {
+			props: { data }
+		} = this;
+
+		return (
+			<div className="container content">
+				<div className="row">
+					{data.map(item => (
+						<Item
+							key={item.id}
+							item={item}
+						/>
+					))}
+				</div>
 			</div>
-		</div>
-	);
+		);
+	}
+}
+
+const mapStateToProps = state => {
+	return {
+		data: state.items.data
+	};
 };
 
-export default Items;
+export default connect(
+	mapStateToProps,
+	{ fetchProductsAction }
+)(Items);

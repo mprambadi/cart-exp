@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { MdRemoveCircle, MdAddCircle } from "react-icons/md";
 import "../App.scss";
+import { connect } from "react-redux";
+import { addCartItem } from "../redux/actions/";
 
 class Item extends Component {
 	state = {
@@ -24,12 +26,12 @@ class Item extends Component {
 
 	addItem = () => {
 		const {
-			props: { item, addItem },
+			props: { item, addCartItem },
 			state: { count }
 		} = this;
 
 		if (count > 0) {
-			addItem({
+			addCartItem({
 				...item,
 				count,
 				total: item.price * count,
@@ -45,6 +47,7 @@ class Item extends Component {
 				value <= this.props.item.quantity ? value.replace(/[^0-9]/g, "") : 1
 		});
 	};
+
 	checkCart = () => {
 		const {
 			props: { item },
@@ -56,12 +59,12 @@ class Item extends Component {
 
 	cartQuantity = () => {
 		const {
-			props: { state, item }
+			props: { carts, item }
 		} = this;
 
 		return (
-			state.carts.find(cart => cart.id === item.id) &&
-			state.carts.find(cart => cart.id === item.id).count
+			carts.find(cart => cart.id === item.id) &&
+			carts.find(cart => cart.id === item.id).count
 		);
 	};
 	render() {
@@ -120,8 +123,6 @@ class Item extends Component {
 						>
 							Add To Cart
 						</button>
-
-						{/* <pre>{JSON.stringify(state.carts, null, 2)}</pre> */}
 					</div>
 				</div>
 			</div>
@@ -129,4 +130,11 @@ class Item extends Component {
 	}
 }
 
-export default Item;
+const mapStateToProps = state => ({
+	carts: state.carts.carts
+});
+
+export default connect(
+	mapStateToProps,
+	{ addCartItem }
+)(Item);
