@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { MdRemoveCircle, MdAddCircle } from "react-icons/md";
 import "../App.scss";
 import { connect } from "react-redux";
-import { addCartItem } from "../redux/actions/";
+import { addCart } from "../redux/actions/";
+import { calcCount, getQuantity } from "../redux/reducer/carts";
 
 class Item extends Component {
 	state = {
@@ -11,62 +12,28 @@ class Item extends Component {
 	};
 
 	handleCount = add => {
-		this.setState(
-			state => ({
-				count: parseInt(state.count) + parseInt(add)
-			}),
-			() =>
-				this.setState({
-					itemError: this.checkCart()
-						? "Stock has been reached can't add more item"
-						: ""
-				})
-		);
+
+      console.log(this.props.item)
+		this.setState(state => ({
+			count: parseInt(state.count) + parseInt(add)
+		}));
 	};
 
 	addItem = () => {
 		const {
-			props: { item, addCartItem },
+			props: { item, addCart },
 			state: { count }
 		} = this;
 
-		if (count > 0) {
-			addCartItem({
-				...item,
-				count,
-				total: item.price * count,
-				checked: true,
-				quantity: item.quantity - count
-			});
-		}
+		addCart({ productId: item.id, count });
 	};
-
-	changeCount = ({ target: { name, value } }) => {
-		this.setState({
-			[name]:
-				value <= this.props.item.quantity ? value.replace(/[^0-9]/g, "") : 1
+	changeCount = ({ target: { value } }) => {
+      this.setState({
+			count:
+				value <= this.props.item.stock ? value.replace(/[^0-9]/g, "") : 1
 		});
 	};
 
-	checkCart = () => {
-		const {
-			props: { item },
-			state: { count }
-		} = this;
-
-		return this.cartQuantity() + count > item.quantity;
-	};
-
-	cartQuantity = () => {
-		const {
-			props: { carts, item }
-		} = this;
-
-		return (
-			carts.find(cart => cart.id === item.id) &&
-			carts.find(cart => cart.id === item.id).count
-		);
-	};
 	render() {
 		const {
 			props: { item }
@@ -94,11 +61,12 @@ class Item extends Component {
 								name="count"
 								value={this.state.count}
 								onChange={this.changeCount}
+								// disabled
 							/>
 
 							<button
 								className="btn p-1"
-								disabled={this.state.count >= item.quantity}
+								disabled={this.state.count >= item.inventory}
 								onClick={() => this.handleCount(1)}
 							>
 								<MdAddCircle
@@ -119,7 +87,7 @@ class Item extends Component {
 						<button
 							className={`btn btn-success mb-3 pl-3 pr-3`}
 							onClick={this.addItem}
-							disabled={this.checkCart() && this.checkCart()}
+							disabled={item.inventory === 0}
 						>
 							Add To Cart
 						</button>
@@ -130,11 +98,11 @@ class Item extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	carts: state.carts.carts
-});
+// const mapStateToProps = (state, ownProps) => ({
+// 	quantity: getQuantity(state.carts, ownProps.item.id)
+// });
 
 export default connect(
-	mapStateToProps,
-	{ addCartItem }
+	null,
+	{ addCart }
 )(Item);

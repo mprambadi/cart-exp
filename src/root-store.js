@@ -1,13 +1,21 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import rootReducer from "./root-reducer";
+import rootReducer from "./redux/reducer/";
 import thunk from "redux-thunk";
+import { createLogger } from "redux-logger";
+import { fetchProductsAction } from "./redux/actions";
 
 const rootStore = () => {
 	const composeEnhancers =
 		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+	const middleware = [thunk];
+	if (process.env.NODE_ENV !== "production") {
+		middleware.push(createLogger());
+	}
+
 	const store = createStore(
 		rootReducer,
-		composeEnhancers(applyMiddleware(thunk))
+		composeEnhancers(applyMiddleware(...middleware))
 	);
 
 	if (module.hot) {

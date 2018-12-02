@@ -1,20 +1,28 @@
-import { FETCH_PRODUCTS, FETCH_PRODUCTS_SUCCESS } from "../../root-type";
+import { FETCH_PRODUCTS, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_ERROR, ITEMS_SEARCH } from "../../root-type";
 import { getProducts } from "../../services/api";
 
 export const fetchProductsAction = () => async dispatch => {
-	try {
-		dispatch({ type: FETCH_PRODUCTS, payload: { loading: true } });
-		const { data } = await getProducts();
 
-		dispatch({
-			type: FETCH_PRODUCTS_SUCCESS,
-			payload: { data, loading: false }
-		});
+	try {
+		dispatch({ type: FETCH_PRODUCTS });
+      const { data } = await getProducts();
+      dispatch(fetchProductSuccess(data))
 	} catch (error) {
-		dispatch({
-			type: FETCH_PRODUCTS_SUCCESS,
-			payload: { error, loading: false }
-		});
+      dispatch(fetchProductError(error))
 	}
 };
 
+export const searchItem = ({target:{value}}) => ({
+   type:ITEMS_SEARCH,
+   search:value
+})
+
+const fetchProductSuccess = products => ({
+	type: FETCH_PRODUCTS_SUCCESS,
+	products
+});
+
+const fetchProductError = error => ({
+   type: FETCH_PRODUCTS_ERROR,
+   error
+})

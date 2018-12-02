@@ -2,18 +2,19 @@
  * ITEM TYPE
  */
 
-
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FETCH_PRODUCTS_LOADING = "FETCH_PRODUCTS_LOADING";
 export const FETCH_PRODUCTS_ERROR = "FETCH_PRODUCTS_ERROR";
 export const FETCH_PRODUCTS_SUCCESS = "FETCH_PRODUCTS_SUCCESS";
-
-
+export const ITEMS_SEARCH = "ITEMS_SEARCH"
 /**
  * CART TYPE
  */
-export const ADD_CART = 'ADD_CART'
-export const REMOVE_CART = 'REMOVE_CART'
-export const REMOVE_ALL_CART = 'REMOVE_ALL_CART'
-export const CHECK_ALL_CART = 'CHECK_ALL_CART'
-export const TOTAL_CALC_CART = 'TOTAL_CALC_CART'
+export const ADD_CART = "ADD_CART";
+export const REMOVE_CART = "REMOVE_CART";
+export const REMOVE_ALL_CART = "REMOVE_ALL_CART";
+export const CHECK_ALL_CART = "CHECK_ALL_CART";
+export const TOTAL_CALC_CART = "TOTAL_CALC_CART";
+export const CHANGE_CART = "CHANGE_CART";
+export const CHECK_DISCOUNT = " CHECK_DISCOUNT";
+export const CHECK_OUT = "CHECK_OUT";

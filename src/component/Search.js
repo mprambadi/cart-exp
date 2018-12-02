@@ -1,7 +1,9 @@
 import React from "react";
+import {connect} from 'react-redux';
+import * as actions from '../redux/actions/index'
 import { MdSearch } from "react-icons/md";
 
-const Search = ({state, changeState}) => {
+const Search = ({search, searchItem}) => {
 	return (
 		<div className="d-flex">
 			<div className="input-group d-flex justify-content-end">
@@ -9,9 +11,9 @@ const Search = ({state, changeState}) => {
                type="text"
 					className="form-control text-center d-block"
                placeholder="search"
-               value={state.filter}
+               value={search}
                name='filter'
-               onChange={({target:{name,value}})=>changeState({name,value})}
+               onChange={searchItem}
 				/>
 				<div className="input-group-append">
 					<button className="btn" type="button" id="button-addon2">
@@ -23,4 +25,7 @@ const Search = ({state, changeState}) => {
 	);
 };
 
-export default Search;
+const mapStateToProps = (state) => ({
+   search: state.items.search
+})
+export default connect(mapStateToProps,actions)(Search);
