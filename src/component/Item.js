@@ -3,8 +3,6 @@ import { MdRemoveCircle, MdAddCircle } from "react-icons/md";
 import "../App.scss";
 import { connect } from "react-redux";
 import { addCart } from "../redux/actions/";
-import { calcCount, getQuantity } from "../redux/reducer/carts";
-
 class Item extends Component {
 	state = {
 		count: 1,
@@ -97,10 +95,6 @@ class Item extends Component {
 		);
 	}
 }
-
-// const mapStateToProps = (state, ownProps) => ({
-// 	quantity: getQuantity(state.carts, ownProps.item.id)
-// });
 
 export default connect(
 	null,
