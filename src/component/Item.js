@@ -10,8 +10,6 @@ class Item extends Component {
 	};
 
 	handleCount = add => {
-
-      console.log(this.props.item)
 		this.setState(state => ({
 			count: parseInt(state.count) + parseInt(add)
 		}));
@@ -26,9 +24,8 @@ class Item extends Component {
 		addCart({ productId: item.id, count });
 	};
 	changeCount = ({ target: { value } }) => {
-      this.setState({
-			count:
-				value <= this.props.item.stock ? value.replace(/[^0-9]/g, "") : 1
+		this.setState({
+			count: value <= this.props.item.stock ? value.replace(/[^0-9]/g, "") : 1
 		});
 	};
 
